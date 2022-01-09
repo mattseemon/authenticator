@@ -1,11 +1,8 @@
-﻿using System;
-
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+﻿using Seemon.Authenticator.Helpers.ViewModels;
 
 namespace Seemon.Authenticator.ViewModels
 {
-    public class MainViewModel : ObservableObject
+    public class MainViewModel : ViewModelBase
     {
         public MainViewModel()
         {

@@ -1,6 +1,4 @@
-﻿using System;
-
-using Seemon.Authenticator.Models;
+﻿using Seemon.Authenticator.Models.Setttings;
 
 namespace Seemon.Authenticator.Contracts.Services
 {
@@ -8,8 +6,8 @@ namespace Seemon.Authenticator.Contracts.Services
     {
         void InitializeTheme();
 
-        void SetTheme(AppTheme theme);
+        void SetTheme(ApplicationTheme theme);
 
-        AppTheme GetCurrentTheme();
+        ApplicationTheme GetCurrentTheme();
     }
 }

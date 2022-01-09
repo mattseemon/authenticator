@@ -1,48 +1,49 @@
-﻿using System;
-using System.Windows.Input;
-
+﻿using Microsoft.Toolkit.Mvvm.Input;
 using Seemon.Authenticator.Contracts.Services;
-
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+using Seemon.Authenticator.Helpers.ViewModels;
+using System.Windows.Input;
 
 namespace Seemon.Authenticator.ViewModels
 {
-    public class ShellViewModel : ObservableObject
+    public class ShellViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
-        private RelayCommand _goBackCommand;
-        private RelayCommand _loadedCommand;
-        private RelayCommand _unloadedCommand;
-
-        public RelayCommand GoBackCommand => _goBackCommand ?? (_goBackCommand = new RelayCommand(OnGoBack, CanGoBack));
-
-        public ICommand LoadedCommand => _loadedCommand ?? (_loadedCommand = new RelayCommand(OnLoaded));
-
-        public ICommand UnloadedCommand => _unloadedCommand ?? (_unloadedCommand = new RelayCommand(OnUnloaded));
+        private ICommand _goBackCommand;
+        private ICommand _loadedCommand;
+        private ICommand _unloadedCommand;
+        private ICommand _showSettingsCommand;
+        private ICommand _showAboutCommand;
 
         public ShellViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
         }
 
-        private void OnLoaded()
-        {
-            _navigationService.Navigated += OnNavigated;
-        }
+        public ICommand GoBackCommand => _goBackCommand ??= RegisterCommand(OnGoBack, CanGoBack);
 
-        private void OnUnloaded()
-        {
-            _navigationService.Navigated -= OnNavigated;
-        }
+        public ICommand LoadedCommand => _loadedCommand ??= RegisterCommand(OnLoaded);
 
-        private bool CanGoBack()
-            => _navigationService.CanGoBack;
+        public ICommand UnloadedCommand => _unloadedCommand ??= RegisterCommand(OnUnloaded);
 
-        private void OnGoBack()
-            => _navigationService.GoBack();
+        public ICommand ShowSettingsCommand => _showSettingsCommand ??= RegisterCommand(OnShowSettings);
+
+        public ICommand ShowAboutCommand => _showAboutCommand ??= RegisterCommand(OnShowAbout);
+
+        private void OnLoaded() => _navigationService.Navigated += OnNavigated;
+
+        private void OnUnloaded() => _navigationService.Navigated -= OnNavigated;
+
+        private bool CanGoBack() => _navigationService.CanGoBack;
+
+        private void OnGoBack() => _navigationService.GoBack();
+
+        private void OnShowSettings() => _navigationService.NavigateTo(typeof(SettingsViewModel).FullName);
+
+        private void OnShowAbout() => _navigationService.NavigateTo(typeof(AboutViewModel).FullName);
 
         private void OnNavigated(object sender, string viewModelName)
-            => GoBackCommand.NotifyCanExecuteChanged();
+        {
+            (GoBackCommand as RelayCommand).NotifyCanExecuteChanged();
+        }
     }
 }

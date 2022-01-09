@@ -1,43 +1,32 @@
-﻿using System;
-using System.Collections;
-using System.IO;
-
+﻿using Seemon.Authenticator;
 using Seemon.Authenticator.Contracts.Services;
-using Seemon.Authenticator.Core.Contracts.Services;
-using Seemon.Authenticator.Models;
-
-using Microsoft.Extensions.Options;
-using Seemon.Authenticator;
+using System.Collections;
 
 namespace Authenticator.Services
 {
     public class PersistAndRestoreService : IPersistAndRestoreService
     {
         private readonly IFileService _fileService;
-        private readonly AppConfig _appConfig;
-        private readonly string _localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        private readonly IApplicationInfoService _applicationInfoService;
+        private readonly string _settingsFilename = "authenticator.settings.json";
 
-        public PersistAndRestoreService(IFileService fileService, IOptions<AppConfig> appConfig)
+        public PersistAndRestoreService(IFileService fileService, IApplicationInfoService applicationInfoService)
         {
             _fileService = fileService;
-            _appConfig = appConfig.Value;
+            _applicationInfoService = applicationInfoService;
         }
 
         public void PersistData()
         {
             if (App.Current.Properties != null)
             {
-                var folderPath = Path.Combine(_localAppData, _appConfig.ConfigurationsFolder);
-                var fileName = _appConfig.AppPropertiesFileName;
-                _fileService.Save(folderPath, fileName, App.Current.Properties);
+                _fileService.Save(_applicationInfoService.DataPath, _settingsFilename, App.Current.Properties);
             }
         }
 
         public void RestoreData()
         {
-            var folderPath = Path.Combine(_localAppData, _appConfig.ConfigurationsFolder);
-            var fileName = _appConfig.AppPropertiesFileName;
-            var properties = _fileService.Read<IDictionary>(folderPath, fileName);
+            var properties = _fileService.Read<IDictionary>(_applicationInfoService.DataPath, _settingsFilename);
             if (properties != null)
             {
                 foreach (DictionaryEntry property in properties)

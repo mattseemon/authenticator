@@ -1,0 +1,141 @@
+﻿<Page x:Class="Seemon.Authenticator.Views.SettingsPage"
+      Style="{DynamicResource MahApps.Styles.Page}"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Seemon.Authenticator.Views"
+      xmlns:converters="clr-namespace:Seemon.Authenticator.Helpers.Converters"
+      xmlns:properties="clr-namespace:Seemon.Authenticator.Properties"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Style="{StaticResource PageTitleStyle}"
+            Margin="{StaticResource MediumLeftMargin}"
+            Text="{x:Static properties:Resources.SettingsPageTitle}" />
+        <Grid
+            Grid.Row="1"
+            Margin="{StaticResource MediumLeftRightMargin}"
+            Background="{DynamicResource MahApps.Brushes.Gray10}">
+            <StackPanel Width="450">
+                <GroupBox Header="Appearance" Margin="0 0 0 0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Label Content="Choose theme:"
+                                Grid.Row="0" Grid.Column="0" Margin="5,10,10,10" />
+                        <ComboBox
+                                Grid.Row="0" Grid.Column="1" Margin="0,10,10,10" DisplayMemberPath="Description"
+                                ItemsSource="{Binding Theme.Base, Converter={converters:EnumToCollectionConverter}, Mode=OneTime}"
+                                SelectedValue="{Binding Theme.Base}"
+                                SelectedValuePath="Value">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}" CommandParameter="Theme" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
+                        <Label Content="Choose accent:"
+                                Grid.Row="1" Grid.Column="0" Margin="5,0,10,10" />
+                        <ComboBox
+                                Grid.Row="1" Grid.Column="1" Margin="0,0,10,10"
+                                ItemsSource="{Binding AccentColors}"
+                                SelectedValue="{Binding Theme.Accent}"
+                                SelectedValuePath="Name">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}" CommandParameter="Theme" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border
+                                                Width="20" Height="20" Margin="0,0,5,0"
+                                                Background="{Binding ColorBrush}" />
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="System"
+                        Margin="0,10,0,0" Padding="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <CheckBox Content="Start Vault with Windows"
+                                Grid.Row="0" Grid.Column="0" Margin="10,10,10,10"
+                                IsChecked="{Binding System.StartWithWindows}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="StartWithWindows" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="StartWithWindows" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </CheckBox>
+                        <CheckBox Content="Always on top"
+                                Grid.Row="0" Grid.Column="1" Margin="0,10,10,10"
+                                IsChecked="{Binding System.AlwaysOnTop}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="AlwaysOnTop" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="AlwaysOnTop" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </CheckBox>
+                        <CheckBox Content="Show Vault in notification area"
+                                Grid.Row="1" Grid.Column="0" Margin="10,0,10,10"
+                                IsChecked="{Binding System.ShowInNotification}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="TaskbarIcon" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="TaskbarIcon" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </CheckBox>
+                        <CheckBox Content="Hide on launch" 
+                                  Grid.Row="1" Grid.Column="1" Margin="0 0 10 10" 
+                                  IsChecked="{Binding System.HideOnLaunch}"
+                                  IsEnabled="{Binding System.ShowInNotification}"/>
+                        <CheckBox Content="Minimize to notification area"
+                                Grid.Row="2" Grid.Column="0" Margin="10,0,10,10"
+                                IsChecked="{Binding System.MinimizeToNotification}"
+                                IsEnabled="{Binding System.ShowInNotification}" />
+                        <CheckBox Content="Close to notification area"
+                                Grid.Row="2" Grid.Column="1" Margin="0,0,10,10"
+                                IsChecked="{Binding System.CloseToNotification}"
+                                IsEnabled="{Binding System.ShowInNotification}" />
+                    </Grid>
+                </GroupBox>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

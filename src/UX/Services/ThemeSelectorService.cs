@@ -8,57 +8,55 @@ using ControlzEx.Theming;
 
 using MahApps.Metro.Theming;
 using Seemon.Authenticator;
+using Seemon.Authenticator.Models.Setttings;
+using System.Windows.Media;
 
 namespace Authenticator.Services
 {
     public class ThemeSelectorService : IThemeSelectorService
     {
-        private const string HcDarkTheme = "pack://application:,,,/Styles/Themes/HC.Dark.Blue.xaml";
-        private const string HcLightTheme = "pack://application:,,,/Styles/Themes/HC.Light.Blue.xaml";
-
-        public ThemeSelectorService()
+        private readonly ISettingsService _settingsService;
+        public ThemeSelectorService(ISettingsService settingsService)
         {
+            _settingsService = settingsService;
         }
 
-        public void InitializeTheme()
-        {
-            // TODO WTS: Mahapps.Metro supports syncronization with high contrast but you have to provide custom high contrast themes
-            // We've added basic high contrast dictionaries for Dark and Light themes
-            // Please complete these themes following the docs on https://mahapps.com/docs/themes/thememanager#creating-custom-themes
-            ThemeManager.Current.AddLibraryTheme(new LibraryTheme(new Uri(HcDarkTheme), MahAppsLibraryThemeProvider.DefaultInstance));
-            ThemeManager.Current.AddLibraryTheme(new LibraryTheme(new Uri(HcLightTheme), MahAppsLibraryThemeProvider.DefaultInstance));
+        public void InitializeTheme() => SetTheme(GetCurrentTheme());
 
-            var theme = GetCurrentTheme();
-            SetTheme(theme);
-        }
-
-        public void SetTheme(AppTheme theme)
+        public void SetTheme(ApplicationTheme theme)
         {
-            if (theme == AppTheme.Default)
+            if (theme.ToString() == ApplicationTheme.Default.ToString())
             {
-                ThemeManager.Current.ThemeSyncMode = ThemeSyncMode.SyncAll;
-                ThemeManager.Current.SyncTheme();
+                ThemeManager.Current.SyncTheme(ThemeSyncMode.SyncAll);
             }
             else
             {
-                ThemeManager.Current.ThemeSyncMode = ThemeSyncMode.SyncWithHighContrast;
-                ThemeManager.Current.SyncTheme();
-                ThemeManager.Current.ChangeTheme(Application.Current, $"{theme}.Blue", SystemParameters.HighContrast);
+                ThemeManager.Current.SyncTheme(ThemeSyncMode.SyncAll);
+                if(theme.Base == ApplicationTheme.ThemeBase.System)
+                {
+                    var currentTheme = ThemeManager.Current.DetectTheme(Application.Current);
+                    var inverseTheme = ThemeManager.Current.GetInverseTheme(currentTheme);
+
+                    ThemeManager.Current.AddTheme(RuntimeThemeGenerator.Current.GenerateRuntimeTheme(inverseTheme.BaseColorScheme, (Color)ColorConverter.ConvertFromString(theme.Accent)));
+                    ThemeManager.Current.ChangeTheme(Application.Current, ThemeManager.Current.AddTheme(RuntimeThemeGenerator.Current.GenerateRuntimeTheme(currentTheme.BaseColorScheme, (Color)ColorConverter.ConvertFromString(theme.Accent))));
+                }
+                else if( theme.Accent == "System")
+                {
+                    ThemeManager.Current.ChangeThemeBaseColor(Application.Current, theme.Base.ToString());
+                }
+                else
+                {
+                    var newTheme = RuntimeThemeGenerator.Current.GenerateRuntimeTheme(theme.Base.ToString(), (Color)ColorConverter.ConvertFromString(theme.Accent));
+                    var inverseTheme = ThemeManager.Current.GetInverseTheme(newTheme);
+
+                    ThemeManager.Current.AddTheme(inverseTheme);
+                    ThemeManager.Current.ChangeTheme(Application.Current, ThemeManager.Current.AddTheme(newTheme));
+                }
             }
 
-            App.Current.Properties["Theme"] = theme.ToString();
+            _settingsService.Set("application.theme", theme);
         }
 
-        public AppTheme GetCurrentTheme()
-        {
-            if (App.Current.Properties.Contains("Theme"))
-            {
-                var themeName = App.Current.Properties["Theme"].ToString();
-                Enum.TryParse(themeName, out AppTheme theme);
-                return theme;
-            }
-
-            return AppTheme.Default;
-        }
+        public ApplicationTheme GetCurrentTheme() => _settingsService.Get("application.theme", ApplicationTheme.Default);
     }
 }

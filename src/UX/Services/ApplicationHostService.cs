@@ -84,7 +84,7 @@ namespace Seemon.Authenticator.Services
                 // Default activation that navigates to the apps default page
                 _shellWindow = _serviceProvider.GetService(typeof(IShellWindow)) as IShellWindow;
                 _navigationService.Initialize(_shellWindow.GetNavigationFrame());
-                _shellWindow.ShowWindow();
+                _shellWindow.Show();
                 _navigationService.NavigateTo(typeof(MainViewModel).FullName);
                 await Task.CompletedTask;
             }

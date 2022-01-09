@@ -4,6 +4,7 @@ using System.Windows.Navigation;
 
 using Seemon.Authenticator.Contracts.Services;
 using Seemon.Authenticator.Contracts.ViewModels;
+using Seemon.Authenticator.Helpers.Extensions;
 
 namespace Authenticator.Services
 {
@@ -15,12 +16,12 @@ namespace Authenticator.Services
 
         public event EventHandler<string> Navigated;
 
-        public bool CanGoBack => _frame.CanGoBack;
-
         public NavigationService(IPageService pageService)
         {
             _pageService = pageService;
         }
+
+        public bool CanGoBack => _frame.CanGoBack;
 
         public void Initialize(Frame shellFrame)
         {
@@ -33,8 +34,11 @@ namespace Authenticator.Services
 
         public void UnsubscribeNavigation()
         {
-            _frame.Navigated -= OnNavigated;
-            _frame = null;
+            if(_frame != null)
+            {
+                _frame.Navigated -= OnNavigated;
+                _frame = null;
+            }
         }
 
         public void GoBack()

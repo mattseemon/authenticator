@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authenticator.Core", "Core\Authenticator.Core.csproj", "{7ABA1F24-4992-453C-93A9-031538FC12CE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authenticator", "UX\Authenticator.csproj", "{C98DA358-E363-4661-9418-B93442DD1750}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5BBB980F-DF2B-4493-A2F0-BFFE93A3C5D3}"
+	ProjectSection(SolutionItems) = preProject
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7ABA1F24-4992-453C-93A9-031538FC12CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7ABA1F24-4992-453C-93A9-031538FC12CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7ABA1F24-4992-453C-93A9-031538FC12CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7ABA1F24-4992-453C-93A9-031538FC12CE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C98DA358-E363-4661-9418-B93442DD1750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C98DA358-E363-4661-9418-B93442DD1750}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C98DA358-E363-4661-9418-B93442DD1750}.Release|Any CPU.ActiveCfg = Release|Any CPU

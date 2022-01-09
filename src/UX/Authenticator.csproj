@@ -5,17 +5,54 @@
     <RootNamespace>Seemon.Authenticator</RootNamespace>
     <UseWPF>true</UseWPF>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <ApplicationIcon>Authenticator.ico</ApplicationIcon>
+    <Description>Secure, Two Factor Authenticator</Description>
+    <Copyright>© Copyright 2022, Matt Seemon. All rights reserved.</Copyright>
+    <PackageIcon>Logo-128.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/mattseemon/authenticator</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mattseemon/authenticator</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <AssemblyVersion>$(AssemblyVersion)</AssemblyVersion>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <PackageLicenseFile>E:\Repositories\Github\authenticator\LICENSE</PackageLicenseFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MahApps.Metro" Version="2.4.6" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.16" />
-    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.0.2" />
+    <None Remove="Views\Logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Authenticator.Core.csproj" />
+    <Content Include="Authenticator.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\assets\Logo-128.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro" Version="2.4.9" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Logo.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="AssemblyInfo.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AssemblyInfo.tt</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -34,5 +71,16 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="AssemblyInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+    </None>
+    <None Update="Assets\Logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 </Project>

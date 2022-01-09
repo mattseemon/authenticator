@@ -2,12 +2,8 @@
 
 namespace Seemon.Authenticator.Contracts.Views
 {
-    public interface IShellWindow
+    public interface IShellWindow : IWindow
     {
         Frame GetNavigationFrame();
-
-        void ShowWindow();
-
-        void CloseWindow();
     }
 }

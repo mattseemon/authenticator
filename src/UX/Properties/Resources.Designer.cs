@@ -61,6 +61,15 @@ namespace Seemon.Authenticator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string AboutPageTitle {
+            get {
+                return ResourceManager.GetString("AboutPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Authenticator.
         /// </summary>
         public static string AppDisplayName {
@@ -70,11 +79,20 @@ namespace Seemon.Authenticator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Main.
+        ///   Looks up a localized string similar to Home.
         /// </summary>
         public static string MainPageTitle {
             get {
                 return ResourceManager.GetString("MainPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string SettingsPageTitle {
+            get {
+                return ResourceManager.GetString("SettingsPageTitle", resourceCulture);
             }
         }
         

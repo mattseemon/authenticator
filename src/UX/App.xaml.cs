@@ -5,7 +5,6 @@ using System.Windows.Threading;
 
 using Seemon.Authenticator.Contracts.Services;
 using Seemon.Authenticator.Contracts.Views;
-using Seemon.Authenticator.Core.Contracts.Services;
 using Seemon.Authenticator.Core.Services;
 using Seemon.Authenticator.Models;
 using Seemon.Authenticator.Services;
@@ -16,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Authenticator.Services;
+using Seemon.Authenticator.Helpers.Extensions;
 
 namespace Seemon.Authenticator
 {
@@ -28,9 +28,7 @@ namespace Seemon.Authenticator
     {
         private IHost _host;
 
-        public T GetService<T>()
-            where T : class
-            => _host.Services.GetService(typeof(T)) as T;
+        public static T GetService<T>() where T : class => ((App)Current)._host.Services.GetService(typeof(T)) as T;
 
         public App()
         {
@@ -65,10 +63,14 @@ namespace Seemon.Authenticator
             services.AddSingleton<IFileService, FileService>();
 
             // Services
+            services.AddSingleton<IApplicationInfoService, ApplicationInfoService>();
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
             services.AddSingleton<IPersistAndRestoreService, PersistAndRestoreService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<ISettingsService, SettingsService>();
+            services.AddSingleton<IWindowManagerService, WindowManagerService>();
+            services.AddSingleton<ISystemService, SystemService>();
 
             // Views and ViewModels
             services.AddTransient<IShellWindow, ShellWindow>();
@@ -77,8 +79,14 @@ namespace Seemon.Authenticator
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainPage>();
 
+            services.AddTransient<SettingsViewModel>();
+            services.AddTransient<SettingsPage>();
+
+            services.AddTransient<AboutViewModel>();
+            services.AddTransient<AboutPage>();
+
             // Configuration
-            services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
+            services.ConfigureDictionary<ApplicationUrls>(context.Configuration.GetSection("urls"));
         }
 
         private async void OnExit(object sender, ExitEventArgs e)

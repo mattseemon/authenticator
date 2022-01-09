@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 
-using Seemon.Authenticator.Core.Contracts.Services;
+using Seemon.Authenticator.Contracts.Services;
 
 using Newtonsoft.Json;
 
@@ -28,7 +28,7 @@ namespace Seemon.Authenticator.Core.Services
                 Directory.CreateDirectory(folderPath);
             }
 
-            var fileContent = JsonConvert.SerializeObject(content);
+            var fileContent = JsonConvert.SerializeObject(content, Formatting.Indented);
             File.WriteAllText(Path.Combine(folderPath, fileName), fileContent, Encoding.UTF8);
         }
 

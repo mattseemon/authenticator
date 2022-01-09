@@ -1,4 +1,4 @@
-﻿namespace Seemon.Authenticator.Core.Contracts.Services
+﻿namespace Seemon.Authenticator.Contracts.Services
 {
     public interface IFileService
     {
