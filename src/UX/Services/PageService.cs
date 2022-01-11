@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Controls;
-
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Seemon.Authenticator.Contracts.Services;
 using Seemon.Authenticator.ViewModels;
 using Seemon.Authenticator.Views;
-
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Controls;
 
 namespace Authenticator.Services
 {
@@ -22,6 +20,7 @@ namespace Authenticator.Services
             Configure<MainViewModel, MainPage>();
             Configure<SettingsViewModel, SettingsPage>();
             Configure<AboutViewModel, AboutPage>();
+            Configure<LicenseViewModel, LicensePage>();
         }
 
         public Type GetPageType(string key)

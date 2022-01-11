@@ -1,10 +1,9 @@
-﻿using System;
-using System.Windows.Controls;
-using System.Windows.Navigation;
-
-using Seemon.Authenticator.Contracts.Services;
+﻿using Seemon.Authenticator.Contracts.Services;
 using Seemon.Authenticator.Contracts.ViewModels;
 using Seemon.Authenticator.Helpers.Extensions;
+using System;
+using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace Authenticator.Services
 {
@@ -13,6 +12,7 @@ namespace Authenticator.Services
         private readonly IPageService _pageService;
         private Frame _frame;
         private object _lastParameterUsed;
+        private Page _currentPage;
 
         public event EventHandler<string> Navigated;
 
@@ -22,6 +22,8 @@ namespace Authenticator.Services
         }
 
         public bool CanGoBack => _frame.CanGoBack;
+
+        public Page CurrentPage => _currentPage;
 
         public void Initialize(Frame shellFrame)
         {
@@ -97,7 +99,7 @@ namespace Authenticator.Services
                 {
                     navigationAware.OnNavigatedTo(e.ExtraData);
                 }
-
+                _currentPage = frame.Content as Page;
                 Navigated?.Invoke(sender, dataContext.GetType().FullName);
             }
         }

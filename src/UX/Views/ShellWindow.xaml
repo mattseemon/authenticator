@@ -29,6 +29,7 @@
                 ToolTip="{x:Static properties:Resources.ShellGoBackButton}"
                 Command="{Binding GoBackCommand}">
             </Button>
+            <Button Content="{ip:Material Kind=Home}" Command="{Binding GoToHomeCommand}" />
         </controls:WindowCommands>
     </win:WindowBase.LeftWindowCommands>
     <win:WindowBase.RightWindowCommands>
@@ -43,7 +44,7 @@
     </win:WindowBase.RightWindowCommands>
     <win:WindowBase.Content>
         <Frame
-            x:Name="shellFrame"
+            x:Name="ShellFrame"
             NavigationUIVisibility="Hidden"
             Focusable="False" />
     </win:WindowBase.Content>

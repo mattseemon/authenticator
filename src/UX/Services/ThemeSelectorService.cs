@@ -1,14 +1,7 @@
-﻿using System;
-using System.Windows;
-
+﻿using ControlzEx.Theming;
 using Seemon.Authenticator.Contracts.Services;
-using Seemon.Authenticator.Models;
-
-using ControlzEx.Theming;
-
-using MahApps.Metro.Theming;
-using Seemon.Authenticator;
 using Seemon.Authenticator.Models.Setttings;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Authenticator.Services

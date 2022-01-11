@@ -17,7 +17,8 @@ namespace Seemon.Authenticator.Helpers.Extensions
             NegativeButtonText = "Cancel"
         };
 
-        public static IViewModel GetDataContext(this Window window) => (IViewModel)(window.FindName("ShellFrame") is Frame frame
+        public static IViewModel GetDataContext(this Window window)
+            => (IViewModel)(window.FindName("ShellFrame") is Frame frame
             ? frame.GetDataContext()
             : window.DataContext ?? null);
 

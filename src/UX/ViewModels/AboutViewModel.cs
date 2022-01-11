@@ -18,6 +18,7 @@ namespace Seemon.Authenticator.ViewModels
         private readonly ISystemService _systemService;
 
         private ICommand _openInBrowserCommand;
+        private ICommand _showLicenseCommand;
 
         public AboutViewModel(IOptions<ApplicationUrls> applicationUrls, IApplicationInfoService applicationInfoService,
             ISystemService systemService, INavigationService navigationService)
@@ -40,20 +41,18 @@ namespace Seemon.Authenticator.ViewModels
 
         public ICommand OpenInBrowserCommand => _openInBrowserCommand ??= RegisterCommand<string>(OnOpenInBrowser);
 
-        public void OnNavigatedFrom()
-        {
-            
-        }
+        public ICommand ShowLicenseCommand => _showLicenseCommand ??= RegisterCommand(OnShowLicense);
 
-        public void OnNavigatedTo(object parameter)
-        {
-            
-        }
+        public void OnNavigatedFrom() { }
+
+        public void OnNavigatedTo(object parameter) { }
 
         private void OnOpenInBrowser(string parameter)
         {
             var url = _applicationUrls[parameter];
             _systemService.OpenInWebBrowser(url);
         }
+
+        private void OnShowLicense() => _navigationService.NavigateTo(typeof(LicenseViewModel).FullName);
     }
 }

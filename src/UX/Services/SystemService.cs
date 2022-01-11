@@ -2,6 +2,8 @@
 using Seemon.Authenticator.Contracts.Services;
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Seemon.Authenticator.Services
 {
@@ -49,6 +51,26 @@ namespace Seemon.Authenticator.Services
                     key.DeleteValue(identifier, false);
                 }
             }
+        }
+
+        public string ShowFolderDialog(string description, string initialDirectory, bool showNewFolderButton = true)
+        {
+            if(!string.IsNullOrEmpty(initialDirectory) && !initialDirectory.EndsWith(Path.DirectorySeparatorChar))
+            {
+                initialDirectory += Path.DirectorySeparatorChar;
+            }
+
+            using var dialog = new FolderBrowserDialog
+            {
+                Description = description,
+                UseDescriptionForTitle = true,
+                AutoUpgradeEnabled = true,
+                SelectedPath = initialDirectory,
+                ShowNewFolderButton = showNewFolderButton,
+                RootFolder = Environment.SpecialFolder.Desktop
+            };
+
+            return dialog.ShowDialog() == DialogResult.OK ? dialog.SelectedPath : string.Empty;
         }
     }
 }

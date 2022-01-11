@@ -1,4 +1,4 @@
-# 3rd-Party Software for [Vault](https://github.com/mattseemon/Vault.git)
+# 3rd-Party Software for [authenticator](https://github.com/mattseemon/authenticator.git)
 
 The following 3rd-party software packages are distributed with **Vault**. 
 

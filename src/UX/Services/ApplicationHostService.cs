@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-
+﻿using Microsoft.Extensions.Hosting;
 using Seemon.Authenticator.Contracts.Activation;
 using Seemon.Authenticator.Contracts.Services;
 using Seemon.Authenticator.Contracts.Views;
 using Seemon.Authenticator.ViewModels;
-
-using Microsoft.Extensions.Hosting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Seemon.Authenticator.Services
 {

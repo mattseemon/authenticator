@@ -13,6 +13,8 @@ namespace Seemon.Authenticator.Contracts.Services
 
         bool NavigateTo(string pageKey, object parameter = null, bool clearNavigation = false);
 
+        Page CurrentPage { get; }
+
         void GoBack();
 
         void UnsubscribeNavigation();

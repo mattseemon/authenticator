@@ -1,10 +1,15 @@
-﻿using Seemon.Authenticator.Contracts.Services;
+﻿using MahApps.Metro.Controls.Dialogs;
+using Seemon.Authenticator.Contracts.Services;
 using Seemon.Authenticator.Contracts.ViewModels;
+using Seemon.Authenticator.Contracts.Views;
 using Seemon.Authenticator.Helpers.ViewModels;
+using Seemon.Authenticator.Helpers.Views;
 using Seemon.Authenticator.Models.Settings;
 using Seemon.Authenticator.Models.Setttings;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -25,25 +30,49 @@ namespace Seemon.Authenticator.ViewModels
         private readonly IThemeSelectorService _themeSelectorService;
         private readonly IWindowManagerService _windowManagerService;
         private readonly ISystemService _systemService;
+        private readonly IPasswordService _passwordService;
+        private readonly IPersistAndRestoreService _persistAndRestoreService;
+        private readonly IPasswordCacheService _passwordCacheService;
+        private readonly IApplicationInfoService _applicationInfoService;
 
         private ApplicationTheme _theme;
         private SystemSettings _systemSettings;
+        private StorageSettings _storageSettings;
+        private SecuritySettings _securitySettings;
 
         private ICommand _selectionChangedCommand;
         private ICommand _checkedCommand;
+        private ICommand _createPasswordCommand;
+        private ICommand _removePasswordCommand;
+        private ICommand _changePasswordCommand;
+        private ICommand _browseCommand;
 
         public SettingsViewModel(ISettingsService settingsService, IThemeSelectorService themeSelectorService,
-            IWindowManagerService windowManagerService, ISystemService systemService)
+            IWindowManagerService windowManagerService, ISystemService systemService, IPasswordService passwordService,
+            IPersistAndRestoreService persistAndRestoreService, IPasswordCacheService passwordCacheService,
+            IApplicationInfoService applicationInfoService)
         {
             _settingsService = settingsService;
             _themeSelectorService = themeSelectorService;
             _windowManagerService = windowManagerService;
             _systemService = systemService;
+            _passwordService = passwordService;
+            _persistAndRestoreService = persistAndRestoreService;
+            _passwordCacheService = passwordCacheService;
+            _applicationInfoService = applicationInfoService;
         }
 
         public ICommand SelectionChangedCommand => _selectionChangedCommand ??= RegisterCommand<string>(OnSelectionChanged);
 
         public ICommand CheckedCommand => _checkedCommand ??= RegisterCommand<string>(OnChecked);
+
+        public ICommand CreatePasswordCommand => _createPasswordCommand ??= RegisterCommand(OnCreatePassword, CanCreatePassword);
+
+        public ICommand RemovePasswordCommand => _removePasswordCommand ??= RegisterCommand(OnRemovePassword, CanRemoveAndChangePassword);
+
+        public ICommand ChangePasswordCommand => _changePasswordCommand ??= RegisterCommand(OnChangePassword, CanRemoveAndChangePassword);
+
+        public ICommand BrowseCommand => _browseCommand ??= RegisterCommand(OnBrowse);
 
         public List<AccentColorData> AccentColors { get; set; }
 
@@ -58,7 +87,22 @@ namespace Seemon.Authenticator.ViewModels
             set => SetProperty(ref _systemSettings, value);
         }
 
-        public void OnNavigatedFrom() { }
+        public StorageSettings Storage
+        {
+            get => _storageSettings;
+            set => SetProperty(ref _storageSettings, value);
+        }
+
+        public SecuritySettings Security
+        {
+            get => _securitySettings;
+            set => SetProperty(ref _securitySettings, value);
+        }
+
+        public void OnNavigatedFrom() 
+        {
+            _persistAndRestoreService.PersistData();
+        }
 
         public void OnNavigatedTo(object parameter)
         {
@@ -76,6 +120,8 @@ namespace Seemon.Authenticator.ViewModels
 
             Theme = _settingsService.Get("application.theme", ApplicationTheme.Default);
             System = _settingsService.Get("settings.system", SystemSettings.Default);
+            Storage = _settingsService.Get("settings.storage", StorageSettings.Default);
+            Security = _settingsService.Get("settings.security", SecuritySettings.Default);
         }
 
         private void OnSelectionChanged(string parameter)
@@ -113,6 +159,112 @@ namespace Seemon.Authenticator.ViewModels
                 case "AlwaysOnTop":
                     _windowManagerService.MainWindow.Topmost = System.AlwaysOnTop;
                     break;
+            }
+        }
+
+        private bool CanCreatePassword() => !Storage.Encrypted;
+
+        private void OnCreatePassword()
+        {
+            var password = _passwordService.CreatePassword();
+            if (password != null)
+            {
+                // TODO: Encrypt the existing authenticator accounts
+
+                Storage.Encrypted = true;
+                Storage.Password = _passwordService.HashPassword(password);
+                _passwordCacheService.Set(password);
+            }
+            RaiseCommandsCanExecute();
+        }
+
+        private bool CanRemoveAndChangePassword() => Storage.Encrypted;
+
+        private async void OnRemovePassword()
+        {
+            IWindow window = _windowManagerService.GetWindow(PageKey);
+
+            var options = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText="No", ColorScheme= MetroDialogColorScheme.Inverted };
+            var response = await ((WindowBase)window).ShowMessageAsync("Remove password protection!", "Are you sure you want to remove the password protection for Authenticator accounts?", MessageDialogStyle.AffirmativeAndNegative, options);
+
+            if (response == MessageDialogResult.Affirmative)
+            {
+                var password = _passwordService.GetPassword(forcePrompt: true);
+                if(password == null)
+                {
+                    return;
+                }
+
+                bool verified = false;
+                while (!verified)
+                {
+                    verified = _passwordService.VerifyPassword(password, Storage.Password);
+                    if (!verified)
+                    {
+                        password = _passwordService.GetPassword(true, true);
+                    }
+                    if(password == null)
+                    {
+                        return;
+                    }   
+                }
+                if (verified)
+                {
+                    // TODO: Decrypt the existing authenticator accounts
+
+                    Storage.Encrypted = false;
+                    Storage.Password = String.Empty;
+                    _passwordCacheService.Clear();
+                }
+            }
+            RaiseCommandsCanExecute();
+        }
+
+        private void OnChangePassword()
+        {
+            var passwords = _passwordService.ChangePassword();
+            if(passwords == null)
+            {
+                return;
+            }
+
+            bool verified = false;
+            while (!verified)
+            {
+                verified = _passwordService.VerifyPassword(passwords.OldPassword, Storage.Password);
+                if (!verified)
+                {
+                    passwords = _passwordService.ChangePassword(true);
+                }
+                if (passwords == null)
+                {
+                    return;
+                }
+            }
+            if (verified)
+            {
+                // TODO: Decrypt and encrypt existing authenticator entires.
+
+                Storage.Encrypted = true;
+                Storage.Password = _passwordService.HashPassword(passwords.NewPassword);
+                _passwordCacheService.Set(passwords.NewPassword);
+            }
+        }
+
+        private async void OnBrowse()
+        {
+            var location = string.IsNullOrEmpty(Storage.Location) ? _applicationInfoService.DataPath : Storage.Location;
+            location = _systemService.ShowFolderDialog("Select location to store authenticator accounts data file", location);
+            if (!string.IsNullOrEmpty(location))
+            {
+                IWindow window = _windowManagerService.GetWindow(PageKey);
+                var options = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No", ColorScheme = MetroDialogColorScheme.Inverted };
+                var response = await ((WindowBase)window).ShowMessageAsync("Move accounts data file!", $"Are you sure you want to move the Authenticator accounts data file to '{location}'?", MessageDialogStyle.AffirmativeAndNegative, options);
+                if(response == MessageDialogResult.Affirmative)
+                {
+                    // TODO: Move data file location
+                    Storage.Location = location;
+                }
             }
         }
     }

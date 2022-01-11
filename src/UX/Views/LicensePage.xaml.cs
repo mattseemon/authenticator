@@ -4,11 +4,11 @@ using System.Windows.Controls;
 namespace Seemon.Authenticator.Views
 {
     /// <summary>
-    /// Interaction logic for AboutPage.xaml
+    /// Interaction logic for LicensePage.xaml
     /// </summary>
-    public partial class AboutPage : Page
+    public partial class LicensePage : Page
     {
-        public AboutPage(AboutViewModel viewModel)
+        public LicensePage(LicenseViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;

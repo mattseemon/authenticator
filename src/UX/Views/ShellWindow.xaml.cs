@@ -14,6 +14,6 @@ namespace Seemon.Authenticator.Views
         }
 
         public Frame GetNavigationFrame()
-            => shellFrame;
+            => ShellFrame;
     }
 }

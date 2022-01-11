@@ -1,21 +1,19 @@
-﻿using System.IO;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Threading;
-
+﻿using Authenticator.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Seemon.Authenticator.Contracts.Services;
 using Seemon.Authenticator.Contracts.Views;
 using Seemon.Authenticator.Core.Services;
+using Seemon.Authenticator.Helpers.Extensions;
 using Seemon.Authenticator.Models;
 using Seemon.Authenticator.Services;
 using Seemon.Authenticator.ViewModels;
 using Seemon.Authenticator.Views;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Authenticator.Services;
-using Seemon.Authenticator.Helpers.Extensions;
+using System.IO;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace Seemon.Authenticator
 {
@@ -71,10 +69,13 @@ namespace Seemon.Authenticator
             services.AddSingleton<ISettingsService, SettingsService>();
             services.AddSingleton<IWindowManagerService, WindowManagerService>();
             services.AddSingleton<ISystemService, SystemService>();
+            services.AddSingleton<IEncryptionService, EncryptionService>();
+            services.AddSingleton<IPasswordService, PasswordService>();
+            services.AddSingleton<IPasswordCacheService, PasswordCacheService>();
 
             // Views and ViewModels
-            services.AddTransient<IShellWindow, ShellWindow>();
-            services.AddTransient<ShellViewModel>();
+            services.AddSingleton<IShellWindow, ShellWindow>();
+            services.AddSingleton<ShellViewModel>();
 
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainPage>();
@@ -84,6 +85,18 @@ namespace Seemon.Authenticator
 
             services.AddTransient<AboutViewModel>();
             services.AddTransient<AboutPage>();
+
+            services.AddTransient<LicenseViewModel>();
+            services.AddTransient<LicensePage>();
+
+            services.AddTransient<CreatePasswordViewModel>();
+            services.AddTransient<CreatePasswordWindow>();
+
+            services.AddTransient<PasswordViewModel>();
+            services.AddTransient<PasswordWindow>();
+
+            services.AddTransient<ChangePasswordViewModel>();
+            services.AddTransient<ChangePasswordWindow>();
 
             // Configuration
             services.ConfigureDictionary<ApplicationUrls>(context.Configuration.GetSection("urls"));

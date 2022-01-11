@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4-alpha] - 2022-01-11
+
+### Added
+	1. Views & ModelViews
+		* CreatePasswordWindow, PasswordWindow, ChangePasswordWindow
+	2. Services
+		* EncryptionService, PasswordService, PasswordCacheService
+	3. Models
+		* SecuritySetting, StorageSettings
+	4. Controls
+		* SecureString Helper for PasswordBox
+	6. Various Converters, Helpers and Extensions
+
+### Updated
+	1. Services
+		* NavigationService, PageService, SystemService, ThemeSelectorService, ApplicationHostService
+	2. Views & ModelViews
+		* AboutPage, SettingsPage, HomePage, ShellWindow
+	3. 3rd-Party-Notices, CHANGELOG.md
 ## [0.1.2-alpha] - 2022-01-09
 
 ### Added

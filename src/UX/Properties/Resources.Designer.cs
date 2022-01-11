@@ -79,6 +79,15 @@ namespace Seemon.Authenticator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to License.
+        /// </summary>
+        public static string LicensePageTitle {
+            get {
+                return ResourceManager.GetString("LicensePageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         public static string MainPageTitle {
