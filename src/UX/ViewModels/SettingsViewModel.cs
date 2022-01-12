@@ -8,10 +8,7 @@ using Seemon.Authenticator.Models.Settings;
 using Seemon.Authenticator.Models.Setttings;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -34,6 +31,7 @@ namespace Seemon.Authenticator.ViewModels
         private readonly IPersistAndRestoreService _persistAndRestoreService;
         private readonly IPasswordCacheService _passwordCacheService;
         private readonly IApplicationInfoService _applicationInfoService;
+        private readonly ITaskbarIconService _taskbarIconService;
 
         private ApplicationTheme _theme;
         private SystemSettings _systemSettings;
@@ -50,7 +48,7 @@ namespace Seemon.Authenticator.ViewModels
         public SettingsViewModel(ISettingsService settingsService, IThemeSelectorService themeSelectorService,
             IWindowManagerService windowManagerService, ISystemService systemService, IPasswordService passwordService,
             IPersistAndRestoreService persistAndRestoreService, IPasswordCacheService passwordCacheService,
-            IApplicationInfoService applicationInfoService)
+            IApplicationInfoService applicationInfoService, ITaskbarIconService taskbarIconService)
         {
             _settingsService = settingsService;
             _themeSelectorService = themeSelectorService;
@@ -60,6 +58,7 @@ namespace Seemon.Authenticator.ViewModels
             _persistAndRestoreService = persistAndRestoreService;
             _passwordCacheService = passwordCacheService;
             _applicationInfoService = applicationInfoService;
+            _taskbarIconService = taskbarIconService;
         }
 
         public ICommand SelectionChangedCommand => _selectionChangedCommand ??= RegisterCommand<string>(OnSelectionChanged);
@@ -142,11 +141,11 @@ namespace Seemon.Authenticator.ViewModels
                 case "TaskbarIcon":
                     if (System.ShowInNotification)
                     {
-                        //TODO: notification icon initialization
+                        _taskbarIconService.Initialize();
                     }
                     else
                     {
-                        //TODO: notification icon destruction
+                        _taskbarIconService.Destroy();
                     }
                     break;
                 case "StartWithWindows":

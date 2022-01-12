@@ -1,5 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Seemon.Authenticator.Models.Settings
 {
@@ -10,25 +10,25 @@ namespace Seemon.Authenticator.Models.Settings
         private bool _encrypted = false;
         private string _password = string.Empty;
 
-        [JsonProperty("location")]
+        [JsonPropertyName("location")]
         public string Location
         {
             get => _location; set => SetProperty(ref _location, value);
         }
 
-        [JsonProperty("filename")]
+        [JsonPropertyName("filename")]
         public string Filename
         {
             get => _filename; set => SetProperty(ref _filename, value); 
         }
 
-        [JsonProperty("encrypted")]
+        [JsonPropertyName("encrypted")]
         public bool Encrypted
         {
             get => _encrypted; set => SetProperty(ref _encrypted, value);
         }
 
-        [JsonProperty("password")]
+        [JsonPropertyName("password")]
         public string Password
         {
             get => _password; set => SetProperty(ref _password, value);

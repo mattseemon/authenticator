@@ -1,6 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace Seemon.Authenticator.Models
 {
@@ -26,45 +25,45 @@ namespace Seemon.Authenticator.Models
         private AccountType _type = AccountType.TOTP;
         private AccountAlgorithm _algorithm = AccountAlgorithm.SHA1;
 
-        [JsonProperty("issuer")]
+        [JsonPropertyName("issuer")]
         public string Issuer
         {
             get => _issuer; set => SetProperty(ref _issuer, value); 
         }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name
         {
             get => _name; set => SetProperty(ref _name, value);
         }
 
-        [JsonProperty("secret")]
+        [JsonPropertyName("secret")]
         public string Secret
         {
             get => _secret; set => SetProperty(ref _secret, value);
         }
 
-        [JsonProperty("period")]
+        [JsonPropertyName("period")]
         public int Period
         {
             get => _period; set => SetProperty(ref _period, value);
         }
 
-        [JsonProperty("digits")]
+        [JsonPropertyName("digits")]
         public int Digits
         {
             get => _digits; set => SetProperty(ref _digits, value); 
         }
 
-        [JsonProperty("type")]
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonPropertyName("type")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public AccountType Type
         {
             get => _type; set => SetProperty(ref _type, value);
         }
 
-        [JsonProperty("algorithm")]
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonPropertyName("algorithm")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public AccountAlgorithm Algorithm
         {
             get => _algorithm; set => SetProperty(ref _algorithm, value); 

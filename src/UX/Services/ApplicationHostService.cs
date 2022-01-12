@@ -18,16 +18,26 @@ namespace Seemon.Authenticator.Services
         private readonly IThemeSelectorService _themeSelectorService;
         private readonly IPersistAndRestoreService _persistAndRestoreService;
         private readonly IEnumerable<IActivationHandler> _activationHandlers;
+        private readonly ITaskbarIconService _taskbarIconService;
+        private readonly IWindowManagerService _windowManagerService;
+        private readonly IStorageService _storageService;
+
         private IShellWindow _shellWindow;
         private bool _isInitialized;
 
-        public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IThemeSelectorService themeSelectorService)
+        public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers,
+            INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService,
+            IThemeSelectorService themeSelectorService, ITaskbarIconService taskbarIconService,
+            IWindowManagerService windowManagerService, IStorageService storageService)
         {
             _serviceProvider = serviceProvider;
             _activationHandlers = activationHandlers;
             _navigationService = navigationService;
             _persistAndRestoreService = persistAndRestoreService;
             _themeSelectorService = themeSelectorService;
+            _taskbarIconService = taskbarIconService;
+            _windowManagerService = windowManagerService;
+            _storageService = storageService;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -44,6 +54,8 @@ namespace Seemon.Authenticator.Services
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
+            _taskbarIconService.Destroy();
+            _storageService.Save();
             _persistAndRestoreService.PersistData();
             await Task.CompletedTask;
         }
@@ -62,6 +74,13 @@ namespace Seemon.Authenticator.Services
         {
             if (!_isInitialized)
             {
+                _taskbarIconService.Initialize();
+                if (!_storageService.InitializeStorage())
+                {
+                    App.Current.Shutdown();
+                }
+                _windowManagerService.RestoreWindowSettings();
+
                 await Task.CompletedTask;
             }
         }

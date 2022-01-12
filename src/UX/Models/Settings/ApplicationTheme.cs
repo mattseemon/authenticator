@@ -1,7 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System;
+using System.Text.Json.Serialization;
 
 namespace Seemon.Authenticator.Models.Setttings
 {
@@ -20,14 +19,14 @@ namespace Seemon.Authenticator.Models.Setttings
         [JsonConstructor()]
         public ApplicationTheme() { }
 
-        [JsonProperty("base")]
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonPropertyName("base")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public ThemeBase Base
         {
             get => _base; set => SetProperty(ref _base, value); 
         }
 
-        [JsonProperty("accent")]
+        [JsonPropertyName("accent")]
         public string Accent
         {
             get => _accent; set => SetProperty(ref _accent, value);

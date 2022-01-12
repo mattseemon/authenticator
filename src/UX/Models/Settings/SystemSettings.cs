@@ -1,5 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Seemon.Authenticator.Models.Settings
 {
@@ -13,38 +13,38 @@ namespace Seemon.Authenticator.Models.Settings
         private bool _closeToNotification = false;
         
 
-        [JsonProperty("startWithWindows")]
+        [JsonPropertyName("startWithWindows")]
         public bool StartWithWindows
         {
             get => _startWithWindows; set => SetProperty(ref _startWithWindows, value); 
         }
 
-        [JsonProperty("alwaysOnTop")]
+        [JsonPropertyName("alwaysOnTop")]
         public bool AlwaysOnTop
         {
             get => _alwaysOnTop; 
             set => SetProperty(ref _alwaysOnTop, value);
         }
 
-        [JsonProperty("showInNotification")]
+        [JsonPropertyName("showInNotification")]
         public bool ShowInNotification
         {
             get => _showInNotification; set => SetProperty(ref _showInNotification, value);
         }
 
-        [JsonProperty("hideOnLaunch")]
+        [JsonPropertyName("hideOnLaunch")]
         public bool HideOnLaunch
         {
             get => _hideOnLaunch; set => SetProperty(ref _hideOnLaunch, value);
         }
 
-        [JsonProperty("minimizeToNotification")]
+        [JsonPropertyName("minimizeToNotification")]
         public bool MinimizeToNotification
         {
             get => _minimizeToNotification; set => SetProperty(ref _minimizeToNotification, value);
         }
 
-        [JsonProperty("closeToNotification")]
+        [JsonPropertyName("closeToNotification")]
         public bool CloseToNotification
         {
             get => _closeToNotification; set => SetProperty(ref _closeToNotification, value);

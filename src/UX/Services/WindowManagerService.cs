@@ -2,9 +2,6 @@
 using Seemon.Authenticator.Contracts.Views;
 using Seemon.Authenticator.Helpers.Extensions;
 using Seemon.Authenticator.Models.Settings;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 
 namespace Seemon.Authenticator.Services
@@ -32,7 +29,18 @@ namespace Seemon.Authenticator.Services
 
         public void RestoreWindowSettings()
         {
-            MainWindow.Topmost = _settingsService.Get<SystemSettings>("settings.system").AlwaysOnTop;
+            var systemSettings = _settingsService.Get<SystemSettings>("settings.system");
+            if(systemSettings != null)
+            {
+                MainWindow.Topmost = systemSettings.AlwaysOnTop;
+                if(systemSettings.ShowInNotification && systemSettings.HideOnLaunch)
+                {
+                    if(systemSettings.MinimizeToNotification)
+                        MainWindow.Hide();
+                    else
+                        MainWindow.WindowState = WindowState.Minimized;
+                }
+            }
 
             var windowSettings = _settingsService.Get<WindowSettings>("settings.windows");
 

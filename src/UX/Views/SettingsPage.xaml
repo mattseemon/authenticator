@@ -11,7 +11,7 @@
       xmlns:converters="clr-namespace:Seemon.Authenticator.Helpers.Converters"
       xmlns:properties="clr-namespace:Seemon.Authenticator.Properties"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800">
+      d:DesignHeight="600" d:DesignWidth="800">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -27,7 +27,7 @@
             Margin="{StaticResource MediumLeftRightMargin}"
             Background="{DynamicResource MahApps.Brushes.Gray10}">
             <StackPanel Width="450">
-                <GroupBox Header="Appearance" Margin="0 0 0 0">
+                <GroupBox Header="Appearance" Margin="0 0 0 0" Padding="0">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -136,7 +136,17 @@
                                 IsEnabled="{Binding System.ShowInNotification}" />
                     </Grid>
                 </GroupBox>
-                <GroupBox Header="Storage" Margin="0 10 0 0">
+                <GroupBox Header="Security" Margin="0 10 0 0" Padding="0">
+                    <StackPanel Margin="10" Orientation="Horizontal">
+                        <CheckBox Content="Auto lock after" IsChecked="{Binding Security.AutoLock}" />
+                        <StackPanel Orientation="Horizontal" IsEnabled="{Binding Security.AutoLock}">
+                            <mah:NumericUpDown Width="75" Margin="5 0 0 0" HorizontalContentAlignment="Right" Maximum="300" Minimum="5" SwitchUpDownButtons="True"
+                                               Value="{Binding Security.AutoLockDuration}" />
+                            <Label Content="seconds" />
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Storage" Margin="0 10 0 0" Padding="0">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -147,29 +157,19 @@
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Label Content="Storage path:" Grid.Row="0" Grid.Column="0" Margin="5,0,5,5" />
-                        <TextBox Text="{Binding Storage.Location, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Margin="0,0,5,5" />
-                        <Button Grid.Row="0" Grid.Column="2" Margin="0,0,5,5"
+                        <Label Content="Data file location:" Grid.Row="0" Grid.Column="0" Margin="5,10,10,10" />
+                        <TextBox Text="{Binding Storage.Location, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Margin="0,10,10,10" IsReadOnly="True" />
+                        <Button Grid.Row="0" Grid.Column="2" Margin="0,10,10,10"
                                 Command="{Binding BrowseCommand}"
                                 ToolTip="Browse location" Width="32">
                             ...
                         </Button>
                         <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Content="{ip:Material Kind=LockPlus}" Command="{Binding CreatePasswordCommand}" ToolTip="Set encryption password" Width="30" Height="30" Margin="0,5,5,5" />
-                            <Button Content="{ip:Material Kind=LockRemove}" Command="{Binding RemovePasswordCommand}" ToolTip="Remove encryption password" Width="30" Height="30" Margin="0,5,5,5"  />
-                            <Button Content="{ip:Material Kind=LockReset}" Command="{Binding ChangePasswordCommand}" ToolTip="Change encryption password" Width="30" Height="30" Margin="0,5,5,5"  />
+                            <Button Content="{ip:Material Kind=LockPlus}" Command="{Binding CreatePasswordCommand}" ToolTip="Set encryption password" Width="30" Height="30" Margin="0,0,10,10" />
+                            <Button Content="{ip:Material Kind=LockRemove}" Command="{Binding RemovePasswordCommand}" ToolTip="Remove encryption password" Width="30" Height="30" Margin="0,0,10,10"  />
+                            <Button Content="{ip:Material Kind=LockReset}" Command="{Binding ChangePasswordCommand}" ToolTip="Change encryption password" Width="30" Height="30" Margin="0,0,10,10"  />
                         </StackPanel>
                     </Grid>
-                </GroupBox>
-                <GroupBox Header="Security" Margin="0 10 0 0">
-                    <StackPanel Margin="10" Orientation="Horizontal">
-                        <CheckBox Content="Auto lock after" IsChecked="{Binding Security.AutoLock}" />
-                        <StackPanel Orientation="Horizontal" IsEnabled="{Binding Security.AutoLock}">
-                            <mah:NumericUpDown Width="75" Margin="5 0 0 0" HorizontalContentAlignment="Right" Maximum="300" Minimum="5" SwitchUpDownButtons="True"
-                                               Value="{Binding Security.AutoLockDuration}" />
-                            <Label Content="seconds" />
-                        </StackPanel>
-                    </StackPanel>
                 </GroupBox>
             </StackPanel>
         </Grid>

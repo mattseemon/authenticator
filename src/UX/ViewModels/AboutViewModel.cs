@@ -3,9 +3,6 @@ using Seemon.Authenticator.Contracts.Services;
 using Seemon.Authenticator.Contracts.ViewModels;
 using Seemon.Authenticator.Helpers.ViewModels;
 using Seemon.Authenticator.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 
 namespace Seemon.Authenticator.ViewModels

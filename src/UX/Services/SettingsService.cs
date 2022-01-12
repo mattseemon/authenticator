@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
-using Seemon.Authenticator.Contracts.Services;
+﻿using Seemon.Authenticator.Contracts.Services;
+using System.Text.Json;
 using System.Windows;
 
 namespace Seemon.Authenticator.Core.Services
@@ -23,17 +23,12 @@ namespace Seemon.Authenticator.Core.Services
                 return default;
             }
 
-            if(Application.Current.Properties[key] is JObject)
+            if(Application.Current.Properties[key] is JsonElement)
             {
-                var jObject = Application.Current.Properties[key] as JObject;
-                Application.Current.Properties[key] = jObject.ToObject<T>();
+                var jObject = (JsonElement)Application.Current.Properties[key];
+                Application.Current.Properties[key] = JsonSerializer.Deserialize<T>(jObject);
             }
-            if(Application.Current.Properties[key] is JArray)
-            {
-                var jArray = Application.Current.Properties[key] as JArray;
-                Application.Current.Properties[key] = jArray.ToObject<T>();
-            }
-
+            
             return (T)Application.Current.Properties[key];
         }
 

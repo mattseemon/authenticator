@@ -43,11 +43,12 @@ Authenticator was developed using the below tools and technologies.
 
  Library | Version 
  ------- | -------
-[Newtonsoft.Json](http://james.newtonking.com/projects/json-net.aspx)|13.0.1
 [MahApps.Metro](https://github.com/MahApps/MahApps.Metro)|2.4.9
 [MahApps.Metro.IconPacks.Material](https://github.com/MahApps/MahApps.Metro.IconPacks)|4.11.0
 [Microsoft.Extensions.Hosting](https://github.com/dotnet/runtime)|6.0.0
+[Microsoft.Extensions.Caching.Memory](https://github.com/dotnet/runtime)|6.0.0
 [Microsoft.Toolkit.Mvvm](https://github.com/windows-toolkit/WindowsCommunityToolkit)|7.1.2
+[Hardcodet.NotifyIcon.Wpf](https://github.com/hardcodet/wpf-notifyicon)|1.1.0
 
 \* Instead of using the published packages, either included the code as-is or a modified version of the same.
 

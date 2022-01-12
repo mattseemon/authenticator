@@ -9,17 +9,21 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:win="clr-namespace:Seemon.Authenticator.Helpers.Views"
     xmlns:properties="clr-namespace:Seemon.Authenticator.Properties"
+    Icon="pack://application:,,,/Assets/Authenticator.ico"
     Style="{StaticResource CustomMetroWindow}"
     mc:Ignorable="d"
     MinWidth="500"
     MinHeight="600"
-    Title="{x:Static properties:Resources.AppDisplayName}">
+    Title="{x:Static properties:Resources.AppDisplayName}" WindowStartupLocation="CenterScreen">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
         </i:EventTrigger>
         <i:EventTrigger EventName="Unloaded">
             <i:InvokeCommandAction Command="{Binding UnloadedCommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding ClosingCommand}" PassEventArgsToCommand="True" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <win:WindowBase.LeftWindowCommands>

@@ -72,6 +72,8 @@ namespace Seemon.Authenticator
             services.AddSingleton<IEncryptionService, EncryptionService>();
             services.AddSingleton<IPasswordService, PasswordService>();
             services.AddSingleton<IPasswordCacheService, PasswordCacheService>();
+            services.AddSingleton<ITaskbarIconService, TaskbarIconService>();
+            services.AddSingleton<IStorageService, StorageService>();
 
             // Views and ViewModels
             services.AddSingleton<IShellWindow, ShellWindow>();
@@ -97,6 +99,8 @@ namespace Seemon.Authenticator
 
             services.AddTransient<ChangePasswordViewModel>();
             services.AddTransient<ChangePasswordWindow>();
+
+            services.AddTransient<TaskbarIconViewModel>();
 
             // Configuration
             services.ConfigureDictionary<ApplicationUrls>(context.Configuration.GetSection("urls"));

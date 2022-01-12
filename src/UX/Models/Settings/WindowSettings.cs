@@ -1,5 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Seemon.Authenticator.Models.Settings
 {
@@ -10,25 +10,25 @@ namespace Seemon.Authenticator.Models.Settings
         private double _windowHeight;
         private double _windowWidth;
 
-        [JsonProperty("top")]
+        [JsonPropertyName("top")]
         public double WindowTop
         {
             get=> _windowTop; set => SetProperty(ref _windowTop, value); 
         }
 
-        [JsonProperty("left")]
+        [JsonPropertyName("left")]
         public double WindowLeft
         {
             get => _windowLeft; set => SetProperty(ref _windowLeft, value);
         }
 
-        [JsonProperty("height")]
+        [JsonPropertyName("height")]
         public double WindowHeight
         {
             get => _windowHeight; set => SetProperty(ref _windowHeight, value);
         }
 
-        [JsonProperty("width")]
+        [JsonPropertyName("width")]
         public double WindowWidth
         {
             get => _windowWidth; set => SetProperty(ref _windowWidth, value);

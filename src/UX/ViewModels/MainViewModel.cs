@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using Seemon.Authenticator.Helpers.ViewModels;
-using Seemon.Authenticator.Models.Storage;
+﻿using Seemon.Authenticator.Helpers.ViewModels;
 
 namespace Seemon.Authenticator.ViewModels
 {
